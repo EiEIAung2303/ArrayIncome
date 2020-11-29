@@ -4,6 +4,7 @@ let doubleIncomeBtn = document.getElementById('doubleIncome');
 let showOnlyMillionariesBtn = document.getElementById('millionaries');
 let richesBtn = document.getElementById('riches');
 let totalBtn = document.getElementById('total');
+let searchEl = document.getElementById('search');
 
 //users array with objects
 let users = [{
@@ -52,7 +53,7 @@ users = users.map((user) => {
 //to update DOM and get name and income using foreach function according to userData Array
 function updateDom(userData) {
     mainUserContainer.innerHTML = `
-        <div class="d-flex justify-content-between mb-2">
+        <div class="d-flex justify-content-between mb-2 ">
             <div class="font-weight-bold">Users</div>
             <div class="font-weight-bold pr-3">Income(MMK)</div>
         </div>
@@ -114,4 +115,16 @@ totalBtn.addEventListener('click', () => {
             <div class="pr-5">${formatNumber(data)}</div>   
         `;
     mainUserContainer.appendChild(element);
-})
+});
+
+searchEl.addEventListener('input',search);
+
+function search(e) {
+    let data = users;
+    let search = e.target.value.toLowerCase();
+    if (search) {
+        data = data.filter(v=>v.name.toLowerCase().indexOf(search) > -1)
+    }
+    
+    updateDom(data);
+}
