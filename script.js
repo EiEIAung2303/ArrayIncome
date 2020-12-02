@@ -2,6 +2,7 @@
 let mainUserContainer = document.getElementById('mainUsers');
 let doubleIncomeBtn = document.getElementById('doubleIncome');
 let showOnlyMillionariesBtn = document.getElementById('millionaries');
+let showOnlyIncompleteBtn = document.getElementById('incomplete');
 let richesBtn = document.getElementById('riches');
 let totalBtn = document.getElementById('total');
 let searchEl = document.getElementById('search');
@@ -79,7 +80,7 @@ function formatNumber(num) {
 
 updateDom(users);
 
-doubleIncomeBtn.addEventListener('click', (params) => {
+doubleIncomeBtn.addEventListener('click', () => {
     //map() function
     users = users.map((user) => {
         //return as object
@@ -94,6 +95,13 @@ doubleIncomeBtn.addEventListener('click', (params) => {
 showOnlyMillionariesBtn.addEventListener('click', () => {
     let data = users.filter((user) => {
         return user.income > 1000000
+    });
+    updateDom(data);
+})
+
+showOnlyIncompleteBtn.addEventListener('click', () => {
+    let data = users.filter((user) => {
+        return user.income < 1000000
     });
     updateDom(data);
 })
@@ -117,14 +125,14 @@ totalBtn.addEventListener('click', () => {
     mainUserContainer.appendChild(element);
 });
 
-searchEl.addEventListener('input',search);
+searchEl.addEventListener('input', search);
 
 function search(e) {
     let data = users;
+    //there is element(s) when type input value(s) 
     let search = e.target.value.toLowerCase();
     if (search) {
-        data = data.filter(v=>v.name.toLowerCase().indexOf(search) > -1)
+        data = data.filter(v => v.name.toLowerCase().indexOf(search) > -1)
     }
-    
     updateDom(data);
 }
