@@ -174,7 +174,7 @@ function updateDomforDollors(userData) {        //added by Nandar
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
             <div>${user.name}</div>
-            <div class="pr-5">${formatNumber(user.income)}</div>   
+            <div class="pr-5">${user.income}</div>   
         `;
         mainUserContainer.appendChild(element);
     });
