@@ -6,6 +6,7 @@ let showOnlyIncompleteBtn = document.getElementById('incomplete');
 let richesBtn = document.getElementById('riches');
 let totalBtn = document.getElementById('total');
 let searchEl = document.getElementById('search');
+let sortbyLowIncome = document.getElementById('sortfromlowincome'); // added by Nandar 
 
 //users array with objects
 let users = [{
@@ -109,6 +110,13 @@ showOnlyIncompleteBtn.addEventListener('click', () => {
 richesBtn.addEventListener('click', () => {
     let data = users.sort((a, b) => {
         return b.income - a.income
+    });
+    updateDom(data);
+})
+
+sortbyLowIncome.addEventListener('click',()=>{      //added by Nandar 
+    let data = users.sort((a, b) => {
+        return a.income - b.income;
     });
     updateDom(data);
 })
