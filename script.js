@@ -154,7 +154,7 @@ dollorBtn.addEventListener('click',()=>{        //added by Nandar
         //return as object
         return {
             name: user.name,
-            income: user.income * 1330 //(1 dollor = 1330 kyat)
+            income: user.income / 1330 //(1 dollor = 1330 kyat)
         }
     });
     updateDomforDollors(users);
