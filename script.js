@@ -7,6 +7,7 @@ let richesBtn = document.getElementById('riches');
 let totalBtn = document.getElementById('total');
 let searchEl = document.getElementById('search');
 let sortbyLowIncome = document.getElementById('sortfromlowincome'); // added by Nandar 
+let dollorBtn = document.getElementById('dollors');
 
 //users array with objects
 let users = [{
@@ -93,6 +94,7 @@ doubleIncomeBtn.addEventListener('click', () => {
     updateDom(users);
 });
 
+
 showOnlyMillionariesBtn.addEventListener('click', () => {
     let data = users.filter((user) => {
         return user.income > 1000000
@@ -144,3 +146,37 @@ function search(e) {
     }
     updateDom(data);
 }
+
+
+dollorBtn.addEventListener('click',()=>{        //added by Nandar 
+    //map() function
+    users = users.map((user) => {
+        //return as object
+        return {
+            name: user.name,
+            income: user.income * 1330 //(1 dollor = 1330 kyat)
+        }
+    });
+    updateDomforDollors(users);
+})
+
+function updateDomforDollors(userData) {        //added by Nandar 
+    mainUserContainer.innerHTML = `
+        <div class="d-flex justify-content-between mb-2 ">
+            <div class="font-weight-bold">Users</div>
+            <div class="font-weight-bold pr-3">Income($)</div>
+        </div>
+        `;
+    //with callback arrow function
+    userData.forEach((user) => {
+        //console.log(user.name);
+        const element = document.createElement('div');
+        element.classList.add('d-flex', 'justify-content-between', 'mb-2');
+        element.innerHTML = `
+            <div>${user.name}</div>
+            <div class="pr-5">${formatNumber(user.income)}</div>   
+        `;
+        mainUserContainer.appendChild(element);
+    });
+
+};
