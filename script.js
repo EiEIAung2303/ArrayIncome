@@ -7,7 +7,6 @@ let richesBtn = document.getElementById('riches');
 let totalBtn = document.getElementById('total');
 let searchEl = document.getElementById('search');
 let sortbyLowIncome = document.getElementById('sortfromlowincome'); // added by Nandar 
-let dollorBtn = document.getElementById('dollors');
 
 //users array with objects
 let users = [{
@@ -49,16 +48,16 @@ users = users.map((user) => {
     return {
         name: user.name,
         //return Income random number between o and 1000000
-        income: Math.floor(Math.random() * 1000000)
+        incomeKyat: Math.floor(Math.random() * 1000000),
     }
 });
 
 //to update DOM and get name and income using foreach function according to userData Array
 function updateDom(userData) {
     mainUserContainer.innerHTML = `
-        <div class="d-flex justify-content-between mb-2 ">
+        <div class="d-flex justify-content-between mb-2">
             <div class="font-weight-bold">Users</div>
-            <div class="font-weight-bold pr-3">Income(MMK)</div>
+            <div class="font-weight-bold">Income(MMK)</div>  
         </div>
         `;
     //with callback arrow function
@@ -68,75 +67,81 @@ function updateDom(userData) {
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
             <div>${user.name}</div>
-            <div class="pr-5">${formatNumber(user.income)}</div>   
+            <div class="p-1 pr-3">${formatNumberMMK(user.incomeKyat)}</div>   
         `;
         mainUserContainer.appendChild(element);
     });
 
 };
 
-//to format income with ','
-function formatNumber(num) {
+//to format income with ',' MMK
+function formatNumberMMK(num) {
     return Number(num).toLocaleString('mmk')
 }
 
 updateDom(users);
 
+//show Double Income
 doubleIncomeBtn.addEventListener('click', () => {
     //map() function
     users = users.map((user) => {
         //return as object
         return {
             name: user.name,
-            income: user.income * 2
+            incomeKyat: user.incomeKyat * 2
         }
     });
     updateDom(users);
 });
 
-
+//show Millionries
 showOnlyMillionariesBtn.addEventListener('click', () => {
     let data = users.filter((user) => {
-        return user.income > 1000000
+        return (user.incomeKyat > 1000000)
     });
     updateDom(data);
 })
 
+//show lower Income
 showOnlyIncompleteBtn.addEventListener('click', () => {
     let data = users.filter((user) => {
-        return user.income < 1000000
+        return user.incomeKyat < 1000000
     });
     updateDom(data);
 })
 
+//show sort Income from max to min
 richesBtn.addEventListener('click', () => {
     let data = users.sort((a, b) => {
-        return b.income - a.income
+        return b.incomeKyat - a.incomeKyat
     });
     updateDom(data);
 })
 
-sortbyLowIncome.addEventListener('click',()=>{      //added by Nandar 
+//show sort Income from min to max
+sortbyLowIncome.addEventListener('click', () => { //added by Nandar 
     let data = users.sort((a, b) => {
-        return a.income - b.income;
+        return a.incomeKyat - b.incomeKyat;
     });
     updateDom(data);
 })
 
+//show Total Income
 totalBtn.addEventListener('click', () => {
     // 0 is starting point
-    let data = users.reduce((total, user) => (total += user.income), 0);
+    let dataKyat = users.reduce((total, user) => (total += user.incomeKyat), 0);
     const element = document.createElement('div');
     element.classList.add('d-flex', 'justify-content-between', 'mb-2');
     element.innerHTML = `
-            <div>Total</div>
-            <div class="pr-5">${formatNumber(data)}</div>   
+            <div class="font-weight-bold">Total</div>
+            <div class="p-1 p-1 pr-3 font-weight-bold">${formatNumberMMK(dataKyat)}</div>    
         `;
     mainUserContainer.appendChild(element);
 });
 
 searchEl.addEventListener('input', search);
 
+//for search name
 function search(e) {
     let data = users;
     //there is element(s) when type input value(s) 
@@ -146,37 +151,3 @@ function search(e) {
     }
     updateDom(data);
 }
-
-
-dollorBtn.addEventListener('click',()=>{        //added by Nandar 
-    //map() function
-    users = users.map((user) => {
-        //return as object
-        return {
-            name: user.name,
-            income: user.income / 1330 //(1 dollor = 1330 kyat)
-        }
-    });
-    updateDomforDollors(users);
-})
-
-function updateDomforDollors(userData) {        //added by Nandar 
-    mainUserContainer.innerHTML = `
-        <div class="d-flex justify-content-between mb-2 ">
-            <div class="font-weight-bold">Users</div>
-            <div class="font-weight-bold pr-3">Income($)</div>
-        </div>
-        `;
-    //with callback arrow function
-    userData.forEach((user) => {
-        //console.log(user.name);
-        const element = document.createElement('div');
-        element.classList.add('d-flex', 'justify-content-between', 'mb-2');
-        element.innerHTML = `
-            <div>${user.name}</div>
-            <div class="pr-5">${user.income}</div>   
-        `;
-        mainUserContainer.appendChild(element);
-    });
-
-};
