@@ -74,7 +74,6 @@ function updateDom(userData) {
         `;
         mainUserContainer.appendChild(element);
     });
-
 };
 
 //to format income with ',' MMK
@@ -84,17 +83,19 @@ function formatNumberMMK(num) {
 
 updateDom(users);
 
-
 addInfoBtn.addEventListener('click', () => {
     let newName = inpName.value;
     let newIncome = inpIncome.value;
+    if (newName === '' || newIncome === '') {
+        return alert("Please Fill the form.");
+    }
 
    //new Data Object
     let newData = {
         name: newName,
         incomeKyat: newIncome
     }
-    
+
     users.push(newData);
     updateDom(users);
     inpName.value = '';
@@ -150,14 +151,16 @@ sortbyLowIncome.addEventListener('click', () => { //added by Nandar
 totalBtn.addEventListener('click', () => {
     // 0 is starting point
     let dataKyat = users.reduce((total, user) => (total += Number(user.incomeKyat)), 0);
-
-    const element = document.createElement('div');
-    element.classList.add('d-flex', 'justify-content-between', 'mb-2');
-    element.innerHTML = `
+    if (dataKyat != 0) {
+        const element = document.createElement('div');
+        element.classList.add('d-flex', 'justify-content-between', 'mb-2');
+        element.innerHTML = `
             <div class="font-weight-bold">Total</div>
             <div class="pr-3 font-weight-bold">${formatNumberMMK(dataKyat)}</div>    
         `;
     mainUserContainer.appendChild(element);
+    }
+    
 });
 
 searchEl.addEventListener('input', search);
