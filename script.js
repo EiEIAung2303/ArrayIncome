@@ -7,6 +7,9 @@ let richesBtn = document.getElementById('riches');
 let totalBtn = document.getElementById('total');
 let searchEl = document.getElementById('search');
 let sortbyLowIncome = document.getElementById('sortfromlowincome'); // added by Nandar 
+let inpName = document.getElementById('txtName');
+let inpIncome = document.getElementById('txtIncome');
+let addInfoBtn = document.getElementById('addInfo');
 
 //users array with objects
 let users = [{
@@ -67,7 +70,7 @@ function updateDom(userData) {
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
             <div>${user.name}</div>
-            <div class="p-1 pr-3">${formatNumberMMK(user.incomeKyat)}</div>   
+            <div class="pr-3">${formatNumberMMK(user.incomeKyat)}</div>   
         `;
         mainUserContainer.appendChild(element);
     });
@@ -80,6 +83,23 @@ function formatNumberMMK(num) {
 }
 
 updateDom(users);
+
+
+addInfoBtn.addEventListener('click', () => {
+    let newName = inpName.value;
+    let newIncome = inpIncome.value;
+
+   //new Data Object
+    let newData = {
+        name: newName,
+        incomeKyat: newIncome
+    }
+    
+    users.push(newData);
+    updateDom(users);
+    inpName.value = '';
+    inpIncome.value = '';
+});
 
 //show Double Income
 doubleIncomeBtn.addEventListener('click', () => {
@@ -129,12 +149,13 @@ sortbyLowIncome.addEventListener('click', () => { //added by Nandar
 //show Total Income
 totalBtn.addEventListener('click', () => {
     // 0 is starting point
-    let dataKyat = users.reduce((total, user) => (total += user.incomeKyat), 0);
+    let dataKyat = users.reduce((total, user) => (total += Number(user.incomeKyat)), 0);
+
     const element = document.createElement('div');
     element.classList.add('d-flex', 'justify-content-between', 'mb-2');
     element.innerHTML = `
             <div class="font-weight-bold">Total</div>
-            <div class="p-1 p-1 pr-3 font-weight-bold">${formatNumberMMK(dataKyat)}</div>    
+            <div class="pr-3 font-weight-bold">${formatNumberMMK(dataKyat)}</div>    
         `;
     mainUserContainer.appendChild(element);
 });
