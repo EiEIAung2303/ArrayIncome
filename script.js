@@ -83,7 +83,8 @@ function formatNumberMMK(num) {
 
 updateDom(users);
 
-addInfoBtn.addEventListener('click', () => {
+addInfoBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     let newName = inpName.value;
     let newIncome = inpIncome.value;
     if (newName === '' || newIncome === '') {
@@ -95,7 +96,6 @@ addInfoBtn.addEventListener('click', () => {
         name: newName,
         incomeKyat: newIncome
     }
-
     users.push(newData);
     updateDom(users);
     inpName.value = '';
