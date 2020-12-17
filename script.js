@@ -51,7 +51,7 @@ users = users.map((user) => {
     return {
         name: user.name,
         //return Income random number between o and 1000000
-        incomeKyat: Math.floor(Math.random() * 1000000),
+        incomeKyat: Math.floor(Math.random() * 1000000)
     }
 });
 
@@ -59,18 +59,27 @@ users = users.map((user) => {
 function updateDom(userData) {
     mainUserContainer.innerHTML = `
         <div class="d-flex justify-content-between mb-2">
-            <div class="font-weight-bold">Users</div>
-            <div class="font-weight-bold">Income(MMK)</div>  
+            <div class="font-weight-bold ml-3">Users</div>
+            <div class="font-weight-bold ml-auto">Income(MMK)</div> 
+              
         </div>
         `;
     //with callback arrow function
-    userData.forEach((user) => {
+    userData.forEach((user,i) => {
         //console.log(user.name);
         const element = document.createElement('div');
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
             <div>${user.name}</div>
-            <div class="pr-3">${formatNumberMMK(user.incomeKyat)}</div>   
+            <div class="pr-3">${formatNumberMMK(user.incomeKyat)}</div> 
+            <div class="label label-default">
+                <button type="submit" class="btn btn-primary" onclick="editUser(this)" id="btnEdit"
+                data-status="${user.name}" data-index='${i}'>Edit</button>
+            </div>
+            <div class="label label-default">
+                <button type="button" class="btn btn-danger" onclick="deleteUser(${i})"
+                data-status="${user.name}" data-index='${i}'>Delete</button>
+            </div>
         `;
         mainUserContainer.appendChild(element);
     });
@@ -83,24 +92,39 @@ function formatNumberMMK(num) {
 
 updateDom(users);
 
-addInfoBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    let newName = inpName.value;
-    let newIncome = inpIncome.value;
-    if (newName === '' || newIncome === '') {
-        return alert("Please Fill the form.");
-    }
+//convert JSON String to array
+if (localStorage.getItem('users')) {
+    users = JSON.parse(localStorage.getItem('users'));
+}
 
-   //new Data Object
-    let newData = {
-        name: newName,
-        incomeKyat: newIncome
-    }
-    users.push(newData);
-    updateDom(users);
-    inpName.value = '';
-    inpIncome.value = '';
-});
+updateDom(users);
+
+function addUser(e) {
+    if (e.value  === "AddInfo") {
+        console.log(e.state);
+        
+        let newName = inpName.value;
+        let newIncome = inpIncome.value;
+        if (newName === '' || newIncome === '') {
+            return alert("Please Fill the form.");
+         }
+
+        //new Data Object
+        let newData = {
+            name: newName,
+            incomeKyat: newIncome
+         }
+        users.push(newData);
+         updateDom(users);
+         localStorage.setItem('users', JSON.stringify(users));
+         inpName.value = '';
+         inpIncome.value = '';
+         e.value = "UpdateInfo"
+         console.log(e.value);
+     } else {
+        console.log("Update")
+     }
+}
 
 //show Double Income
 doubleIncomeBtn.addEventListener('click', () => {
@@ -156,7 +180,7 @@ totalBtn.addEventListener('click', () => {
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
             <div class="font-weight-bold">Total</div>
-            <div class="pr-3 font-weight-bold">${formatNumberMMK(dataKyat)}</div>    
+            <div class="font-weight-bold">${formatNumberMMK(dataKyat)}</div>    
         `;
     mainUserContainer.appendChild(element);
     }
@@ -175,3 +199,25 @@ function search(e) {
     }
     updateDom(data);
 }
+
+//To delete an object of array
+function deleteUser(index) {
+    //delete index number of data and only one number
+    users.splice(index, 1);
+    localStorage.setItem('users', JSON.stringify(users));
+    updateDom(users);
+}
+
+function editUser(e) {
+    let index = e.dataset.index;
+    let pointUser = users[index];
+    let userName = pointUser.name;
+    let userIncome = pointUser.incomeKyat;
+    console.log(userName,userIncome)
+    document.getElementById("txtName").value = userName;
+    document.getElementById("txtIncome").value = userIncome;
+    //e.value = "UpdateInfo";
+   // console.log(e.value);
+    return e;
+}
+
