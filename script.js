@@ -10,6 +10,7 @@ let sortbyLowIncome = document.getElementById('sortfromlowincome'); // added by 
 let inpName = document.getElementById('txtName');
 let inpIncome = document.getElementById('txtIncome');
 let addInfoBtn = document.getElementById('addInfo');
+let editInfoBtn = document.getElementById('editInfo');
 
 //users array with objects
 let users = [{
@@ -43,7 +44,17 @@ let users = [{
         "name": "Wai Phyoe Aung"
     }
 ]
-
+let editbtn = false;
+function checkBtn() {
+    if (editbtn) {
+        addInfoBtn.style.display = 'none';
+        editInfoBtn.style.display = 'flex';
+    } else {
+        addInfoBtn.style.display = 'flex';
+        editInfoBtn.style.display = 'none';
+    }
+}
+checkBtn();
 //using map() function with callback arrow function passing one parameter 
 //and return name and income 
 users = users.map((user) => {
@@ -208,6 +219,7 @@ function deleteUser(index) {
     updateDom(users);
 }
 
+
 function editUser(e) {
     let index = e.dataset.index;
     let pointUser = users[index];
@@ -216,6 +228,8 @@ function editUser(e) {
     console.log(userName,userIncome)
     document.getElementById("txtName").value = userName;
     document.getElementById("txtIncome").value = userIncome;
+    editbtn = true;
+    checkBtn();
     //e.value = "UpdateInfo";
    // console.log(e.value);
     return e;
