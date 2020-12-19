@@ -70,10 +70,10 @@ users = users.map((user) => {
 function updateDom(userData) {
     mainUserContainer.innerHTML = `
         <div class="d-flex justify-content-between mb-2">
-            <div class="font-weight-bold ml-3">Users</div>
-            <div class="font-weight-bold ml-auto">Income(MMK)</div> 
-              
-        </div>
+                            <div class="font-weight-bold ml-3">Users</div>
+                            <div class="font-weight-bold ml-auto">Income(MMK)</div>
+                            <div class="font-weight-bold ml-auto">Edit/Delete</div>
+                        </div>
         `;
     //with callback arrow function
     userData.forEach((user,i) => {
@@ -81,16 +81,16 @@ function updateDom(userData) {
         const element = document.createElement('div');
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
-            <div>${user.name}</div>
-            <div class="pr-3">${formatNumberMMK(user.incomeKyat)}</div> 
-            <div class="label label-default">
-                <button type="submit" class="btn btn-primary" onclick="editUser(this)" id="btnEdit"
-                data-status="${user.name}" data-index='${i}'>Edit</button>
-            </div>
-            <div class="label label-default">
-                <button type="button" class="btn btn-danger" onclick="deleteUser(${i})"
-                data-status="${user.name}" data-index='${i}'>Delete</button>
-            </div>
+        <div>${user.name}</div>
+                            <div>${formatNumberMMK(user.incomeKyat)}</div>
+                            <div>
+                                <button class="btn btn-primary" onclick="editUser(this)" id="btnEdit" data-status="${user.name}" data-index='${i}'>
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteUser(${i})" data-status="${user.name}" data-index='${i}'>
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
         `;
         mainUserContainer.appendChild(element);
     });
