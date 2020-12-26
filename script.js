@@ -11,7 +11,7 @@ let inpName = document.getElementById('txtName');
 let inpIncome = document.getElementById('txtIncome');
 let addInfoBtn = document.getElementById('addInfo');
 let updateInfoBtn = document.getElementById('updateInfo');
-
+let updateIndex;
 //users array with objects
 let users = [{
         "name": "Kyaw Kyaw"
@@ -221,10 +221,11 @@ function editUser(e) {
 
     let index = e.dataset.index;
     let pointUser = users[index];
-    console.log(pointUser)
+    updateIndex = index;
+    // console.log(pointUser)
     let userName = pointUser.name;
     let userIncome = pointUser.incomeKyat;
-    console.log(userName,userIncome)
+    // console.log(userName,userIncome)
     document.getElementById("txtName").value = userName;
     document.getElementById("txtIncome").value = userIncome;
     updateBtn = true;
@@ -232,10 +233,6 @@ function editUser(e) {
 }
 
 function updateUser(e) {
-   
-    let index = e.dataset.index;
-    console.log(index)
-    
     updateName = inpName.value;
     updateIncome  = inpIncome.value;
 
@@ -245,7 +242,8 @@ function updateUser(e) {
         incomeKyat: updateIncome
      }
 
-    users.splice(index,1,upDateData);
+    // users.splice(index,1,upDateData);
+    users[updateIndex] = upDateData;
   
     localStorage.setItem('users', JSON.stringify(users));
     updateDom(users);
