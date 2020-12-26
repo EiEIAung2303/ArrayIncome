@@ -10,7 +10,7 @@ let sortbyLowIncome = document.getElementById('sortfromlowincome'); // added by 
 let inpName = document.getElementById('txtName');
 let inpIncome = document.getElementById('txtIncome');
 let addInfoBtn = document.getElementById('addInfo');
-let editInfoBtn = document.getElementById('editInfo');
+let updateInfoBtn = document.getElementById('updateInfo');
 
 //users array with objects
 let users = [{
@@ -44,14 +44,18 @@ let users = [{
         "name": "Wai Phyoe Aung"
     }
 ]
-let editbtn = false;
+//bollean datatype
+let updateBtn = false;
+
+//check button
 function checkBtn() {
-    if (editbtn) {
+    //if updateBtn is true
+    if (updateBtn) {
         addInfoBtn.style.display = 'none';
-        editInfoBtn.style.display = 'flex';
+        updateInfoBtn.style.display = 'flex';
     } else {
         addInfoBtn.style.display = 'flex';
-        editInfoBtn.style.display = 'none';
+        updateInfoBtn.style.display = 'none';
     }
 }
 checkBtn();
@@ -81,7 +85,7 @@ function updateDom(userData) {
         const element = document.createElement('div');
         element.classList.add('d-flex', 'justify-content-between', 'mb-2');
         element.innerHTML = `
-        <div>${user.name}</div>
+                            <div>${user.name}</div>
                             <div>${formatNumberMMK(user.incomeKyat)}</div>
                             <div>
                                 <button class="btn btn-primary" onclick="editUser(this)" id="btnEdit" data-status="${user.name}" data-index='${i}'>
@@ -111,30 +115,23 @@ if (localStorage.getItem('users')) {
 updateDom(users);
 
 function addUser(e) {
-    if (e.value  === "AddInfo") {
-        console.log(e.state);
-        
-        let newName = inpName.value;
-        let newIncome = inpIncome.value;
-        if (newName === '' || newIncome === '') {
-            return alert("Please Fill the form.");
-         }
-
-        //new Data Object
-        let newData = {
-            name: newName,
-            incomeKyat: newIncome
-         }
-        users.push(newData);
-         updateDom(users);
-         localStorage.setItem('users', JSON.stringify(users));
-         inpName.value = '';
-         inpIncome.value = '';
-         e.value = "UpdateInfo"
-         console.log(e.value);
-     } else {
-        console.log("Update")
+    
+    let newName = inpName.value;
+    let newIncome = inpIncome.value;
+     if (newName === '' || newIncome === '') {
+        return alert("Please Fill the form.");
      }
+
+    //new Data Object
+    let newData = {
+        name: newName,
+        incomeKyat: newIncome
+     }
+    users.push(newData);
+    updateDom(users);
+    localStorage.setItem('users', JSON.stringify(users));
+    inpName.value = '';
+    inpIncome.value = '';
 }
 
 //show Double Income
@@ -219,19 +216,44 @@ function deleteUser(index) {
     updateDom(users);
 }
 
-
+//to edit object in array
 function editUser(e) {
+
     let index = e.dataset.index;
     let pointUser = users[index];
+    console.log(pointUser)
     let userName = pointUser.name;
     let userIncome = pointUser.incomeKyat;
     console.log(userName,userIncome)
     document.getElementById("txtName").value = userName;
     document.getElementById("txtIncome").value = userIncome;
-    editbtn = true;
-    checkBtn();
-    //e.value = "UpdateInfo";
-   // console.log(e.value);
-    return e;
+    updateBtn = true;
+    checkBtn();  
 }
+
+function updateUser(e) {
+   
+    let index = e.dataset.index;
+    console.log(index)
+    
+    updateName = inpName.value;
+    updateIncome  = inpIncome.value;
+
+
+    let upDateData = {
+        name: updateName,
+        incomeKyat: updateIncome
+     }
+
+    users.splice(index,1,upDateData);
+  
+    localStorage.setItem('users', JSON.stringify(users));
+    updateDom(users);
+    inpName.value = '';
+    inpIncome.value = '';
+    updateBtn = true;
+    checkBtn();
+
+}
+
 
